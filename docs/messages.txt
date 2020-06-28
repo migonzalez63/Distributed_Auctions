@@ -1,0 +1,71 @@
+
+agent Functionality:
+
+	Sending Messages to the Auction house:
+			REGISTRATION, Account ID
+			NEW_BID, Account ID, Item ID, Bid amount 
+			Check
+	
+	Receiving Messages from the Auction house:
+		Bid Handling:
+			BID_ACCEPT, Item ID
+			BID_REJECT, Item ID?
+			OUTBID, Item info?
+		Auction Info:
+			AUCTION_LIST, List of Item Objects currently up for auction.
+			ITEM_UPDATE 
+			NEW_ITEM, new Item Object
+			ITEM_EXPIRATION, Item ID of item that has expired.
+		
+			ITEM_UPDATE, Item ID, 
+			ITEM_WIN, Item ID of item won.
+
+Auction House:
+
+	Sending Messages to the Bank:
+		Setup:
+			REGISTRATION
+			DEREGISTRATION
+		Auction Queries:
+			QUERY, Account ID, Amount to be held
+			
+	Receiving Messages from the Bank:
+		Query Response:
+			QUERY_RESPONSE, Account ID, Verdict 
+			REGISTRATION_CONFIRMATION 
+
+Bank Functionality:
+    Incoming Messages:
+        agent and Auction House Registration:
+            NEW_AGENT, Initial Balance
+            NEW_AUC, Server IP and Port (Socket Address), Initial Balance
+        Placing Holds:
+            QUERY, Account ID, Amount to be Held
+        Transfer Money from one account to another:
+            TRANSFER, Account ID of agent, Account ID of Auction House, Balance to be Transfered
+        Balance Update:
+            UPDATE_BALANCE, Account ID
+        Auction House Update Request:
+            AUCTION_UPDATE
+    Outgoing Messages:
+        Welcome Message (Sent as response to Registration):
+            REGISTRATION_CONFIRMATION
+                For agent: Account ID, Initial Balance, List of Current Available Auction Addresses
+                For Auction House: Account ID, Initial Balance
+        Hold Response (Sent as response to Query):
+            QUERY_ACCEPTANCE, Account ID
+            QUERY_REJECTION, Account ID
+            Note: We can use QUERY_RESPONSE, just need to know what Verdict should be. I was thinking
+                  we could use a boolean (true if able to place hold, false otherwise), but am willing
+                  to work with other primitives.
+        Update Balance (Sent as response to Transfer and Balance Updates):
+            AVAILABLE_FUNDS, Current Available Funds (Will consider all holds, thus it is not the actual
+            amount of funds in the account)
+        Auction House Update List (Sent as reponse to Auction House Request):
+            UPDATED_LIST, List of Socket Address belonging to Auction House Servers
+        
+			
+
+
+
+		
